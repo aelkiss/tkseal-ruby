@@ -16,7 +16,8 @@ jobs:
       uses: medyagh/setup-minikube@latest
     - name: Set up local bin directory
       run: |
-        mkdir "$HOME/bin"
+        echo "Path is $PATH"
+        mkdir -p "$HOME/bin"
         echo "$HOME/bin" >> "$GITHUB_PATH"
     - name: Install sealed secrets controller
       run: |
