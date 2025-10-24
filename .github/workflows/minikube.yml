@@ -14,11 +14,6 @@ jobs:
         bundler-cache: true
     - name: Set up minikube
       uses: medyagh/setup-minikube@latest
-    - name: Set up local bin directory
-      run: |
-        echo "Path is $PATH"
-        mkdir -p "$HOME/bin"
-        echo "$HOME/bin" >> "$GITHUB_PATH"
     - name: Install sealed secrets controller
       run: |
         kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.32.2/controller.yaml
@@ -68,8 +63,9 @@ jobs:
         tk apply --auto-approve=always ./environments/default/
         # diff should show the new sealedsecret
 
-        kubectl get -o jsonpath={.data.testvalue} secret testsecret | base64 -d
+        echo "🔓 The secret is: " $(kubectl get -o jsonpath={.data.testvalue} secret testsecret | base64 -d)
         # should be mashed potatoes
         #
+        echo "🪵 Logs from sealed secrets controller"
         kubectl -n kube-system logs deployment/sealed-secrets-controller
 
